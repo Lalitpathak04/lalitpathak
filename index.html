@@ -13,6 +13,13 @@
             -webkit-text-fill-color: transparent;
         }
         .project-card:hover .demo-overlay { opacity: 1; }
+        
+        /* Ensures the video covers the area nicely */
+        .project-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans selection:bg-blue-500/30">
@@ -62,10 +69,13 @@
 
         <div class="grid md:grid-cols-2 gap-10">
             <div class="project-card group bg-slate-800/50 rounded-3xl border border-slate-700 overflow-hidden hover:border-blue-500/50 transition-all">
-                <div class="aspect-video bg-slate-700 relative flex items-center justify-center overflow-hidden">
-                    <i class="fas fa-robot text-6xl text-slate-600 group-hover:scale-110 transition-transform duration-500"></i>
-                    <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <span class="bg-slate-900 px-4 py-2 rounded-lg font-bold text-sm">VIEW PROJECT DEMO</span>
+                <div class="aspect-video bg-slate-700 relative overflow-hidden">
+                    <video class="project-media" autoplay loop muted playsinline poster="your-fallback-image.jpg">
+                        <source src="your-hiring-agent-video.mp4" type="video/mp4">
+                        </video>
+                    
+                    <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <span class="bg-slate-900 px-4 py-2 rounded-lg font-bold text-sm">LIVE DEMO</span>
                     </div>
                 </div>
                 <div class="p-8">
@@ -85,10 +95,13 @@
             </div>
 
             <div class="project-card group bg-slate-800/50 rounded-3xl border border-slate-700 overflow-hidden hover:border-emerald-500/50 transition-all">
-                <div class="aspect-video bg-slate-700 relative flex items-center justify-center overflow-hidden">
-                    <i class="fas fa-table-tennis-paddle-ball text-6xl text-slate-600 group-hover:scale-110 transition-transform duration-500"></i>
-                    <div class="absolute inset-0 bg-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <span class="bg-slate-900 px-4 py-2 rounded-lg font-bold text-sm">VIEW LIVE TRACKING</span>
+                <div class="aspect-video bg-slate-700 relative overflow-hidden">
+                    <video class="project-media" autoplay loop muted playsinline poster="your-fallback-image-2.jpg">
+                        <source src="your-tennis-video.mp4" type="video/mp4">
+                    </video>
+
+                    <div class="absolute inset-0 bg-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <span class="bg-slate-900 px-4 py-2 rounded-lg font-bold text-sm">VIEW ANALYSIS</span>
                     </div>
                 </div>
                 <div class="p-8">
@@ -166,80 +179,5 @@
         <p>&copy; 2026 Lalit Pathak. Built with Passion & Agentic AI.</p>
     </footer>
 
-    <div id="chat-widget" class="fixed bottom-6 right-6 z-[100]">
-        <button id="chat-toggle" class="w-16 h-16 bg-blue-600 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl hover:scale-110 active:scale-95 transition-all">
-            <i class="fas fa-robot"></i>
-        </button>
-        
-        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-[350px] h-[500px] bg-slate-800 border border-slate-700 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right">
-            <div class="p-5 bg-blue-600 flex justify-between items-center">
-                <div>
-                    <h4 class="font-bold text-white">Lalit's AI Assistant</h4>
-                    <p class="text-xs text-blue-100 flex items-center"><span class="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span> Online</p>
-                </div>
-                <button id="close-chat" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <div id="chat-content" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm scrollbar-thin scrollbar-thumb-slate-700">
-                <div class="flex gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-robot text-xs"></i></div>
-                    <div class="bg-slate-700 p-3 rounded-2xl rounded-tl-none">
-                        Hi! I'm Lalit's digital twin. Ask me about his work with YOLOv8 or LangGraph!
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-slate-900">
-                <form id="chat-form" class="relative">
-                    <input type="text" id="user-input" placeholder="Type your question..." class="w-full bg-slate-800 border border-slate-700 rounded-xl py-3 px-4 focus:outline-none focus:border-blue-500 pr-12 text-sm">
-                    <button type="submit" class="absolute right-2 top-2 w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-xs"><i class="fas fa-paper-plane"></i></button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Chatbot Toggle Logic
-        const toggle = document.getElementById('chat-toggle');
-        const windowEl = document.getElementById('chat-window');
-        const close = document.getElementById('close-chat');
-        const form = document.getElementById('chat-form');
-        const chatContent = document.getElementById('chat-content');
-        const userInput = document.getElementById('user-input');
-
-        toggle.onclick = () => windowEl.classList.toggle('hidden');
-        close.onclick = () => windowEl.classList.add('hidden');
-
-        // Simple Mock Response Logic (Replace with actual API call)
-        form.onsubmit = (e) => {
-            e.preventDefault();
-            const text = userInput.value.trim();
-            if(!text) return;
-
-            // User Message
-            appendMsg(text, 'user');
-            userInput.value = '';
-
-            // Mock AI thinking
-            setTimeout(() => {
-                let response = "That sounds interesting! Lalit used exactly that technology in his Hiring Agent project. You should check his GitHub for the LangGraph implementation details.";
-                if(text.toLowerCase().includes('cv') || text.toLowerCase().includes('tennis')) {
-                    response = "Lalit used YOLOv5 for the Tennis Analytics project. He solved the 'vanishing ball' problem by switching from tracking to predictive analysis!";
-                }
-                appendMsg(response, 'bot');
-            }, 800);
-        };
-
-        function appendMsg(text, sender) {
-            const div = document.createElement('div');
-            div.className = sender === 'user' ? 'flex justify-end' : 'flex gap-2';
-            div.innerHTML = sender === 'user' ? 
-                `<div class="bg-blue-600 p-3 rounded-2xl rounded-tr-none max-w-[80%]">${text}</div>` :
-                `<div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-robot text-xs"></i></div>
-                 <div class="bg-slate-700 p-3 rounded-2xl rounded-tl-none max-w-[80%]">${text}</div>`;
-            chatContent.appendChild(div);
-            chatContent.scrollTop = chatContent.scrollHeight;
-        }
-    </script>
 </body>
 </html>
